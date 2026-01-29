@@ -1,29 +1,31 @@
 require("dotenv").config();
 const express = require("express");
-const cors = require("cors");
 const connectDB = require("./config/db");
 
 const app = express();
 
-// ✅ CORS FIX FINAL (OPTIONS inclus)
-app.use(
-  cors({
-    origin: [
-      "http://localhost:3000",
-      "https://segrais-groupe6.netlify.app"
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true
-  })
-);
+// 🔥 CORS FIX FINAL (OPEN)
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
 
-// ✅ PRE-FLIGHT REQUEST
-app.options("*", cors());
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+
+  next();
+});
 
 app.use(express.json());
 
-// Connexion DB
+// DB
 connectDB();
 
 // Routes
