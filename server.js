@@ -1,30 +1,30 @@
 require("dotenv").config();
 const express = require("express");
-const cors = require("cors"); // 1. Importe cors
+const cors = require("cors"); // Déclaré une seule fois ici
 const connectDB = require("./config/db");
 
 const app = express();
 
-// 2. Remplace ton bloc manuel par ceci :
+// Configuration CORS simplifiée et robuste
 app.use(cors({
-  origin: "*", // Tu pourras restreindre à ton URL Netlify plus tard
+  origin: "*", 
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"]
 }));
 
 app.use(express.json());
 
-// Connexion DB (ajoute un catch pour éviter que le serveur crash en silence)
+// Connexion DB
 connectDB().catch(err => {
-    console.error("Erreur de connexion DB:", err);
+    console.error("Erreur critique de connexion DB :", err);
 });
 
 // Routes
 app.use("/api/auth", require("./routes/auth.routes"));
 app.use("/api/distribution", require("./routes/distribution.routes"));
 
-// 3. Port dynamique pour Render
+// Port dynamique pour Render
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>
-  console.log(`Server lancé sur le port ${PORT}`)
+  console.log(`Serveur lancé sur le port ${PORT}`)
 );
