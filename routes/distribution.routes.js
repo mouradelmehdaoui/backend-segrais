@@ -7,7 +7,8 @@ router.get("/", async (req, res) => {
     const data = await Distribution.find();
     res.json(data);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+   console.error("ERREUR BACKEND :", err); // <--- Très important pour les logs Render
+    res.status(500).json({ error: err.message });
   }
 });
 
@@ -18,7 +19,8 @@ router.get("/:id", async (req, res) => {
     if (!dist) return res.status(404).json({ message: "Distribution non trouvée" });
     res.json(dist);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+   console.error("ERREUR BACKEND :", err); // <--- Très important pour les logs Render
+    res.status(500).json({ error: err.message });
   }
 });
 
@@ -30,7 +32,8 @@ router.post("/", async (req, res) => {
     await newDist.save();
     res.status(201).json(newDist); // renvoyer l'objet complet avec _id
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    console.error("ERREUR BACKEND :", err); // <--- Très important pour les logs Render
+    res.status(500).json({ error: err.message });
   }
 });
 
@@ -41,7 +44,8 @@ router.put("/:id", async (req, res) => {
     if (!updated) return res.status(404).json({ message: "Distribution non trouvée" });
     res.json(updated);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+   console.error("ERREUR BACKEND :", err); // <--- Très important pour les logs Render
+    res.status(500).json({ error: err.message });
   }
 });
 
@@ -51,7 +55,8 @@ router.delete("/:id", async (req, res) => {
     await Distribution.findByIdAndDelete(req.params.id);
     res.json({ message: "Distribution supprimée" });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error("ERREUR BACKEND :", err); // <--- Très important pour les logs Render
+    res.status(500).json({ error: err.message });
   }
 });
 
