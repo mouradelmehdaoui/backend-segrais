@@ -5,17 +5,21 @@ const connectDB = require("./config/db");
 
 const app = express();
 
-// CORS FIX NETLIFY / RENDER
+// ✅ CORS FIX FINAL (OPTIONS inclus)
 app.use(
   cors({
     origin: [
       "http://localhost:3000",
       "https://segrais-groupe6.netlify.app"
     ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
   })
 );
+
+// ✅ PRE-FLIGHT REQUEST
+app.options("*", cors());
 
 app.use(express.json());
 
