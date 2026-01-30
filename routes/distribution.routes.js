@@ -27,15 +27,15 @@ router.get("/:id", async (req, res) => {
 // CREATE
 router.post("/", async (req, res) => {
   try {
-    const newDist = new Distribution(req.body);
-    
-    await newDist.save();
-    res.status(201).json(newDist); // renvoyer l'objet complet avec _id
+    delete req.body._id; // sécurité anti-duplicate
+    const item = new Distribution(req.body);
+    const saved = await item.save();
+    res.status(201).json(saved);
   } catch (err) {
-    console.error("ERREUR BACKEND :", err); // <--- Très important pour les logs Render
     res.status(500).json({ error: err.message });
   }
 });
+
 
 // UPDATE
 router.put("/:id", async (req, res) => {
